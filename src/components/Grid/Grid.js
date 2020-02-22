@@ -18,7 +18,7 @@ const GridSquare = styled.div`
 
   height: ${({ height }) => height + "px"};
   width: ${({ width }) => width + "px"};
-  &:nth-of-type(${({ gridSize }) => gridSize + 'n' + '+ 1'}){
+  &:nth-of-type(${({ gridSize }) => `${gridSize}n + 1`}){
     border-right: 1px solid #b8b8b8;
   }
   &:nth-of-type(${({ gridSize }) => '-n +' + gridSize}){
@@ -30,29 +30,23 @@ const Grid = ({ gridSize, squareSize }) => {
   const [grid, setGrid] = useState([]);
   // if grid size = 12, the map size will be 12x12 or 144 squares
   //Adjust grid weight and height based on size, each square is 45x45px
-  squareSize = 45;
-  gridSize = 10;
-  useEffect(() => {
-    console.log('use effect');
-    if (grid.length == 0) {
 
-      generateGrid();
-    }
-  })
+  useEffect(() => {
+
+    generateGrid();
+
+  }, [gridSize, squareSize])
   const generateGrid = () => {
     let newGrid = [];
-    console.log('gen')
     for (let w = 0; w < gridSize; w++) {
       for (let h = 0; h < gridSize; h++) {
         newGrid.push((<GridSquare
           gridSize={gridSize}
           width={squareSize}
-          height={squareSize}>{w},{h}</GridSquare>))
-
+          height={squareSize}
+          key={`${w}${h}`}>{w},{h}</GridSquare>))
       }
-
     }
-    console.log(newGrid);
     setGrid([...newGrid]);
   }
 
